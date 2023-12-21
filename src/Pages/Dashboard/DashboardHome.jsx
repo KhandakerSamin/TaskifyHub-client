@@ -12,7 +12,7 @@ const DashboardHome = () => {
 
                 </div>
             </nav>
-            <div className="grid grid-cols-4 ">
+            <div className="grid grid-cols-4 m-5">
                 <div className="border-r-4 h-screen">
                     <div className="bg-white w-36 mx-auto flex items-center justify-center h-8 rounded-3xl my-4">
                         <h1 className="text-red-500 text-lg font-bold px-5 py-2  ">To Do (3)</h1>

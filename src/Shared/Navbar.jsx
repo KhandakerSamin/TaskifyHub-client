@@ -7,7 +7,7 @@ import { AuthContext } from "../Provider/AuthProvider";
 const NavBar = () => {
 
 
-    const {user, logOut} = useContext(AuthContext)
+    const { user, logOut } = useContext(AuthContext)
 
 
     const handleLogOut = () => {
@@ -36,21 +36,16 @@ const NavBar = () => {
     const navLinks = <>
         <li><NavLink to="/" className={({ isActive, isPending }) =>
             isPending ? "pending" : isActive ?
-                "text-yellow-600 text-lg font-medium  " :  "text-md font-normal text-white"
+                "text-violet-400 underline underline-offset-4 text-lg font-medium  " : "text-md font-normal text-white"
         }>Home</NavLink></li>
 
-         <li><NavLink to="/dashboard" className={({ isActive, isPending }) =>
-            isPending ? "pending" : isActive ?
-                "text-yellow-600 text-lg font-medium  " :  "text-md font-medium text-white"
-        }>Dashboard</NavLink></li> : <> </>
-        
         <li><NavLink to="/about" className={({ isActive, isPending }) =>
             isPending ? "pending" : isActive ?
-                "text-yellow-600 text-lg font-medium " :  "text-md font-medium text-white"
+                "text-violet-400 underline underline-offset-4 text-lg font-medium " : "text-md font-medium text-white"
         }>About</NavLink></li>
         <li><NavLink to="/contactUs" className={({ isActive, isPending }) =>
             isPending ? "pending" : isActive ?
-                "text-yellow-600 text-lg font-medium " : "text-md font-medium text-white"
+                "text-violet-400 underline underline-offset-4 text-lg font-medium " : "text-md font-medium text-white"
         }>Contact Us</NavLink></li>
     </>
 
@@ -66,7 +61,12 @@ const NavBar = () => {
                         </label>
                     </div>
                     <div className="  min-w-max mx-2">
-                       <h1 className="text-2xl font-bold text-white">TaskifyHUB</h1>
+                        <div className="flex items-center justify-center w-12 h-12 rounded-full dark:bg-violet-400">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="currentColor" className="flex-shrink-0 w-5 h-5 rounded-full dark:text-gray-900">
+                                <path d="M18.266 26.068l7.839-7.854 4.469 4.479c1.859 1.859 1.859 4.875 0 6.734l-1.104 1.104c-1.859 1.865-4.875 1.865-6.734 0zM30.563 2.531l-1.109-1.104c-1.859-1.859-4.875-1.859-6.734 0l-6.719 6.734-6.734-6.734c-1.859-1.859-4.875-1.859-6.734 0l-1.104 1.104c-1.859 1.859-1.859 4.875 0 6.734l6.734 6.734-6.734 6.734c-1.859 1.859-1.859 4.875 0 6.734l1.104 1.104c1.859 1.859 4.875 1.859 6.734 0l21.307-21.307c1.859-1.859 1.859-4.875 0-6.734z"></path>
+                            </svg>
+                        </div>
+                        <h1 className="text-2xl font-bold text-white pl-2">TaskifyHUB</h1>
                     </div>
                     <div className=" hidden ml-64 flex-none  lg:block">
                         <ul className="menu flex justify-center items-center menu-horizontal">
@@ -86,8 +86,8 @@ const NavBar = () => {
 
                         <div>
                             {
-                               user ? <>  <img className='rounded-full w-[35px] md:w-[40px] h-[35px]  md:h-[40px] ' src={user?.photoURL} alt='' />
-                               <h1 className="text-white">{user?.displayName}</h1> </>
+                                user ? <> <div className="flex justify-between items-center "> <img className='rounded-full w-[35px] md:w-[40px] h-[35px]  md:h-[40px] ' src={user?.photoURL} alt='' />
+                                    <h1 className="text-white w-1/3">{user?.displayName}</h1> <button onClick={handleLogOut}><li className='btn text-white   btn-outline hover:bg-transparent hover:text-white hover:text-md'><a>Log Out</a></li></button></div></>
                                     : <NavLink to='/login'><li className='btn text-white ml-3  btn-outline hover:bg-transparent hover:text-white hover:text-md'><a>Log in</a></li></NavLink>
                             }
                         </div>
@@ -95,7 +95,7 @@ const NavBar = () => {
                         <div className="drawer-content">
                             {/* Page content here */}
                             <label htmlFor="my-drawer-4" className="drawer-button ">
-                                
+
                             </label>
 
                         </div>
