@@ -10,6 +10,7 @@ import About from "../Pages/About";
 import ContactUs from "../Pages/ContactUs";
 import DashboardHome from "../Pages/Dashboard/DashboardHome";
 import Roadmap from "../Pages/Dashboard/Roadmap";
+import PrivateRoute from "./PrivateRoute";
 
   export const router = createBrowserRouter([
     {
@@ -32,15 +33,15 @@ import Roadmap from "../Pages/Dashboard/Roadmap";
     },
     {
         path:'/dashboard',
-        element: <Dashboard></Dashboard>,
+        element: <PrivateRoute><Dashboard></Dashboard></PrivateRoute>,
         children: [
             {
                 path:'/dashboard',
-                element:<DashboardHome></DashboardHome>
+                element:<PrivateRoute><DashboardHome></DashboardHome></PrivateRoute>
             },
             {
               path:'/dashboard/roadmap',
-              element:<Roadmap></Roadmap>
+              element:<PrivateRoute><Roadmap></Roadmap></PrivateRoute>
             }
         ]
     },

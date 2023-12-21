@@ -6,7 +6,7 @@ const Banner = () => {
 
 
     return (
-        <div className='bg-gradient-to-r from-slate-950 via-blue-950 to-slate-800 w-full h-[600px] flex justify-between items-center'>
+        <div className='bg-gradient-to-r from-slate-900 via-blue-950 to-slate-800 w-full h-[550px] flex justify-between items-center'>
             <div className='py-36 w-1/2 ml-36 mr-16'>
                 <h1 className='text-4xl font-bold pb-3'>Empower Your Productivity: </h1>
                  <h1 className='text-4xl font-bold pb-3'>TaskifyHub - Your Central Hub for</h1>
