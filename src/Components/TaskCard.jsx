@@ -4,9 +4,11 @@ import { Draggable } from "react-beautiful-dnd";
 import Swal from "sweetalert2";
 import useAxiosPublic from "../hooks/useAxiosPublic";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
-const TaskCard = ({ singledata }) => {
+const TaskCard = ({ singledata, index }) => {
     const axiosPublic = useAxiosPublic()
+    const navigate = useNavigate()
     const handleDelete = (e) => {
         e.preventDefault(); // Correct typo here
         const taskId = singledata._id;
@@ -27,6 +29,8 @@ const TaskCard = ({ singledata }) => {
                         if (res.data.deletedCount > 0) {
                             // Task deleted successfully
                             // refetch();
+                            navigate('/dashboard')
+                            
                             Swal.fire({
                                 title: "Task Deleted!",
                                 text: "Task deleted successfully.",
@@ -37,6 +41,7 @@ const TaskCard = ({ singledata }) => {
                     .catch((error) => {
                         console.error("Error deleting task:", error);
                         // Handle error as needed
+
                         Swal.fire({
                             title: "Error",
                             text: "Error deleting task.",
@@ -87,7 +92,7 @@ const TaskCard = ({ singledata }) => {
 
 
     return (
-        <Draggable draggableId={singledata._id.toString()} index={singledata.index}>
+        <Draggable draggableId={singledata._id.toString()} index={index}>
             {(provided) => (
                 <div
                     {...provided.draggableProps}
@@ -104,7 +109,9 @@ const TaskCard = ({ singledata }) => {
                             <div
                                 className="p-4 transition-opacity group-hover:absolute group-hover:opacity-0 sm:p-6 lg:px-6 pt-6 pb-2"
                             >
-                                <h2 className="mt-4 text-md text-white font-medium sm:text-2xl">{singledata.title}</h2>
+                                 <p className="pt-1 text-white/50 p-1 rounded-l-lg text-sm ">Task - {index+1}</p>
+
+                                <h2 className="mt-1 text-md text-white font-medium sm:text-xl">{singledata.title}</h2>
                                 <h2 className="mt-4 text-md text-red-600  font-medium sm:text-md">Deadline: {singledata.deadline}</h2>
                                 <p className="mt-4 font-bold text-md uppercase">Priority: {singledata.priority}</p>
                                 <p className="pt-7 text-white/50 text-sm ">Hover for more functionality</p>
