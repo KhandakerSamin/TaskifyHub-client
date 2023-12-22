@@ -11,11 +11,13 @@ import ContactUs from "../Pages/ContactUs";
 import DashboardHome from "../Pages/Dashboard/DashboardHome";
 import Roadmap from "../Pages/Dashboard/Roadmap";
 import PrivateRoute from "./PrivateRoute";
+import ErrorPage from "../Pages/ErrorPage";
 
   export const router = createBrowserRouter([
     {
       path: "/",
       element: <Main></Main>,
+      errorElement:<ErrorPage></ErrorPage>,
       children:[
         {
             path:'/',
@@ -34,6 +36,7 @@ import PrivateRoute from "./PrivateRoute";
     {
         path:'/dashboard',
         element: <PrivateRoute><Dashboard></Dashboard></PrivateRoute>,
+        errorElement:<ErrorPage></ErrorPage>,
         children: [
             {
                 path:'/dashboard',

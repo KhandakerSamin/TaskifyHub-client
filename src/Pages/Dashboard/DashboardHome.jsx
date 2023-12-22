@@ -1,26 +1,80 @@
+import { useContext, useState } from "react";
 import { FaPlus } from "react-icons/fa6";
+import { AuthContext } from "../../Provider/AuthProvider";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
+import toast from "react-hot-toast";
+import TaskCard from "../../Components/TaskCard";
 
 const DashboardHome = () => {
+    const { user } = useContext(AuthContext)
+    const axiosPublic = useAxiosPublic()
+
+    const [todo, setTodo] = useState([])
+    const [onGoing, setOnGoing] = useState([])
+    const [completed, setCompleted] = useState([])
+
     const handleNewTask = e => {
         e.preventDefault()
-        const form = e.target 
+        const form = e.target
         const title = form.title.value;
         const description = form.description.value;
         const priority = form.priority.value;
         const deadline = form.deadline.value;
         const type = "toDo"
+        const userEmail = user?.email;
 
         const newTask = {
             title,
             description,
             priority,
             deadline,
-            type
+            type,
+            userEmail
         }
 
         console.log(newTask);
 
+        axiosPublic.post('/tasks', newTask)
+            .then(res => {
+                if (res.data.insertedId) {
+                    console.log('Task added to database');
+                    toast.success('Task added Successfully !')
+                    form.reset();
+                    // navigate('/')
+                }
+            })
+
     }
+
+
+    axiosPublic.get('/tasks')
+    .then(res => {
+        const allData = res.data;
+
+
+        // Filter todoData by type 'todo'
+        const filteredTodoData = allData.filter(item => item.type === 'toDo');
+        const filteredOnGoingData = allData.filter(item => item.type === 'onGoing');
+        const filteredCompletedData = allData.filter(item => item.type === 'Completed');
+
+        setTodo(filteredTodoData);
+        setOnGoing(filteredOnGoingData);
+        setCompleted(filteredCompletedData);
+    })
+    .catch(error => {
+        console.error('Error fetching tasks:', error);
+    });
+
+
+
+
+
+
+
+
+
+
+
     return (
         <div>
             <nav className='h-20 flex justify-between items-center bg-[#1c2536]'>
@@ -42,6 +96,7 @@ const DashboardHome = () => {
                                     type="text"
                                     id="title"
                                     name="title"
+                                    required
                                 />
                             </div>
                             <div className="mb-1">
@@ -53,6 +108,7 @@ const DashboardHome = () => {
                                     rows="4"
                                     id="description"
                                     name="description"
+                                    required
                                 ></textarea>
                             </div>
                             <div className="flex justify-between items-center gap-x-2">
@@ -61,12 +117,13 @@ const DashboardHome = () => {
                                         name="priority"
                                         id="priority"
                                         className=" w-full rounded-lg border-gray-300  p-3 text-white sm:text-sm"
+                                        required
                                     >
                                         <option value="">Select Priority</option>
                                         <option value="low">Low</option>
                                         <option value="moderate">Moderate</option>
                                         <option value="high">High</option>
-                                       
+
                                     </select>
                                 </div>
                                 <div className="w-1/2">
@@ -77,39 +134,61 @@ const DashboardHome = () => {
                                         type="date"
                                         id="deadline"
                                         name="deadline"
+                                        required
                                     />
                                 </div>
                             </div>
-                        <div className="modal-action flex justify-between items-center">
-                        <button onSubmit={handleNewTask} className="btn btn-outline hover:bg-transparent hover:text-white hover:font-bold px-6">Add Task</button>
-                            <form method="dialog">
-                                {/* if there is a button in form, it will close the modal */}
+                            <div className="modal-action flex justify-between items-center">
+                                <button onSubmit={handleNewTask} className="btn btn-outline hover:bg-transparent hover:text-white hover:font-bold px-6">Add Task</button>
+                                <form method="dialog">
+                                    {/* if there is a button in form, it will close the modal */}
 
 
-                                <button className="btn btn-outline hover:bg-transparent hover:text-white hover:font-bold ">Close</button>
+                                    <button className="btn btn-outline hover:bg-transparent hover:text-white hover:font-bold ">Close</button>
 
-                            </form>
-                        </div>
+                                </form>
+                            </div>
                         </form>
-                        
+
                     </div>
                 </dialog>
             </nav>
             <div className="grid grid-cols-4 m-5">
                 <div className="border-r-4 h-screen">
                     <div className="bg-white w-36 mx-auto flex items-center justify-center h-8 rounded-3xl my-4">
-                        <h1 className="text-red-500 text-lg font-bold px-5 py-2  ">To Do (3)</h1>
+                        <h1 className="text-red-500 text-lg font-bold px-5 py-2  ">To Do ({todo.length})</h1>
                     </div>
+
+                    {
+                        todo.map(singledata => <TaskCard key={singledata._id} singledata={singledata}></TaskCard>)
+                    }
+
+
+
                 </div>
                 <div className="border-r-4 h-screen">
                     <div className="bg-white w-40 mx-auto flex items-center justify-center h-8 rounded-3xl my-4">
-                        <h1 className="text-blue-500 text-lg font-bold px-5 py-2  ">On Going (3)</h1>
+                        <h1 className="text-blue-500 text-lg font-bold px-5 py-2  ">On Going ({onGoing.length})</h1>
                     </div>
+
+                    {
+                        onGoing.map(singledata => <TaskCard key={singledata._id} singledata={singledata}></TaskCard>)
+                    }
+
+
+
                 </div>
                 <div className="border-r-4 h-screen">
                     <div className="bg-white w-40 mx-auto flex items-center justify-center h-8 rounded-3xl my-4">
-                        <h1 className="text-green-600 text-lg font-bold px-5 py-2  ">Completd (3)</h1>
+                        <h1 className="text-green-600 text-lg font-bold px-5 py-2  ">Completd ({completed.length})</h1>
                     </div>
+
+                    {
+                        completed.map(singledata => <TaskCard key={singledata._id} singledata={singledata}></TaskCard>)
+                    }
+
+
+
                 </div>
 
             </div>
